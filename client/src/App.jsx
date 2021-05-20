@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import styles from './styles.jsx';
+import List from './List.jsx';
 
 const Wrapper =  styled.div`
   width: 101vw;
@@ -37,7 +38,9 @@ class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      input: '',
+      name: '',
+      description: '',
+      data: [],
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -48,20 +51,25 @@ class App extends React.Component {
   }
 
   handleClick(e){
-    axios.get(`/temp/${this.state.input}`)
-      .then(({data}) =>{console.log(data)})
-    this.setState({input:''})
+    axios.get(`/temp/${this.state.name}/`)
+      .then(({data}) =>{this.setState({
+        data: data,
+      })})
+    
   }
   
 
   render() {
+    console.log(this.state);
     return (
       <Wrapper>
         <Title>
           Hello World
         </Title>
-        <Input value={this.state.input} onChange={this.handleChange} name="input"/>
+        <Input value={this.state.name} onChange={this.handleChange} name="name"/>
+        <Input value={this.state.description} onChange={this.handleChange} name="description"/>
         <Submit onClick={this.handleClick}>Submit</Submit>
+        <List data={this.state.data}/>
       </Wrapper>
     )
   }
